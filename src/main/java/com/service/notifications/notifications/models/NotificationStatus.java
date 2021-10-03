@@ -1,4 +1,4 @@
-package com.service.notifications.notifications.enums;
+package com.service.notifications.notifications.models;
 
 public enum NotificationStatus {
     NEW,

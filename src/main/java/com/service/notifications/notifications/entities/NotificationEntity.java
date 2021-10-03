@@ -1,8 +1,7 @@
 package com.service.notifications.notifications.entities;
 
-import com.service.notifications.notifications.dto.NotificationDto;
-import com.service.notifications.notifications.enums.NotificationStatus;
-import com.service.notifications.notifications.enums.NotificationType;
+import com.service.notifications.notifications.models.NotificationStatus;
+import com.service.notifications.notifications.models.NotificationType;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -24,16 +23,4 @@ public class NotificationEntity {
     private String createdBy;
     private String modifiedBy;
     private String description;
-
-    public NotificationDto toDto(){
-        NotificationDto notificationDto = new NotificationDto();
-        notificationDto.setCreated(getCreated());
-        notificationDto.setDescription(getDescription());
-        notificationDto.setModified(getModified());
-        notificationDto.setCreatedBy(getCreatedBy());
-        notificationDto.setModifiedBy(getModifiedBy());
-        notificationDto.setStatus(getStatus());
-        notificationDto.setType(getType());
-        return notificationDto;
-    }
 }

@@ -1,8 +1,8 @@
 package com.service.notifications.notifications.dto;
 
 import com.service.notifications.notifications.entities.NotificationEntity;
-import com.service.notifications.notifications.enums.NotificationStatus;
-import com.service.notifications.notifications.enums.NotificationType;
+import com.service.notifications.notifications.models.NotificationStatus;
+import com.service.notifications.notifications.models.NotificationType;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -27,6 +27,18 @@ public class NotificationDto {
                 notificationEntity.setStatus(getStatus());
                 notificationEntity.setType(getType());
                 return notificationEntity;
+        }
+
+        public NotificationDto notificationEntityToDto(NotificationEntity notificationEntity){
+                NotificationDto notificationDto = new NotificationDto();
+                notificationDto.setCreated(notificationEntity.getCreated());
+                notificationDto.setDescription(notificationEntity.getDescription());
+                notificationDto.setModified(notificationEntity.getModified());
+                notificationDto.setCreatedBy(notificationEntity.getCreatedBy());
+                notificationDto.setModifiedBy(notificationEntity.getModifiedBy());
+                notificationDto.setStatus(notificationEntity.getStatus());
+                notificationDto.setType(notificationEntity.getType());
+                return notificationDto;
         }
 
 }
