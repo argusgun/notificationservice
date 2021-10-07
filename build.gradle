@@ -28,6 +28,7 @@ dependencies {
     implementation 'junit:junit:4.13.2'
     // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-aws-messaging
     implementation group: 'org.springframework.cloud', name: 'spring-cloud-aws-messaging', version: '2.2.6.RELEASE'
+    implementation 'org.projectlombok:lombok:1.18.18'
     compileOnly 'org.projectlombok:lombok:1.18.20'
     annotationProcessor 'org.projectlombok:lombok:1.18.20'
     // https://mvnrepository.com/artifact/org.mockito/mockito-all

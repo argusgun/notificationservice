@@ -8,8 +8,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/notifications")
@@ -29,7 +31,7 @@ public class NotificationRestController {
 
     @PostMapping
     public ResponseEntity<NotificationEntity> create(@RequestBody NotificationEntity notificationEntity) {
-        return new ResponseEntity<>(notificationRepo.save(notificationEntity), HttpStatus.OK);
+        return new ResponseEntity<>(notificationRepo.save(notificationEntity), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
@@ -39,12 +41,15 @@ public class NotificationRestController {
     ) {
         BeanUtils.copyProperties(notificationEntity, notificationEntityFromDb, "id");
 
-        return new ResponseEntity<>(notificationRepo.save(notificationEntityFromDb), HttpStatus.OK);
+        return new ResponseEntity<>(notificationRepo.save(notificationEntityFromDb), HttpStatus.ACCEPTED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<NotificationEntity> delete(@PathVariable("id") NotificationEntity notificationEntity) {
-        notificationRepo.delete(notificationEntity);
-        return new ResponseEntity<>(notificationEntity, HttpStatus.OK);
+    public ResponseEntity<NotificationEntity> delete(@PathVariable("id") Long id) throws EntityNotFoundException {
+        Optional<NotificationEntity> p = notificationRepo.findById(id);
+        if (!p.isPresent())
+            throw new EntityNotFoundException("id-" + id);
+        notificationRepo.deleteById(id);
+        return new ResponseEntity<>(p.get(), HttpStatus.ACCEPTED);
     }
 }

@@ -3,6 +3,7 @@ package com.service.notifications.notifications.entities;
 import com.service.notifications.notifications.models.NotificationStatus;
 import com.service.notifications.notifications.models.NotificationType;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
