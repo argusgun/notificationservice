@@ -24,7 +24,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 @TestPropertySource("/application-test.properties")
 class NotificationQueueListenerTest {
-    private static ObjectMapper OBJECT_MAPPER=Jackson2ObjectMapperBuilder.json().build();
+    @Autowired
+    private ObjectMapper objectMapper;
     @MockBean
     private NotificationRepo notificationRepo;
     @Autowired
@@ -32,7 +33,7 @@ class NotificationQueueListenerTest {
 
     @Test
     void processMessage() throws JsonProcessingException {
-        NotificationDto result = OBJECT_MAPPER.readValue(getMessageForTest(),NotificationDto.class);
+        NotificationDto result = objectMapper.readValue(getMessageForTest(),NotificationDto.class);
 
         assertEquals(result, getNotificationDtoForTest());
         notificationQueueListener.processMessage(getMessageForTest());

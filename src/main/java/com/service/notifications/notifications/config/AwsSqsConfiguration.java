@@ -54,6 +54,7 @@ public class AwsSqsConfiguration {
         factory.setAutoStartup(true);
         factory.setMaxNumberOfMessages(10);
         factory.setTaskExecutor(createDefaultTaskExecutor());
+        factory.setWaitTimeOut(10);
         return factory;
     }
 
