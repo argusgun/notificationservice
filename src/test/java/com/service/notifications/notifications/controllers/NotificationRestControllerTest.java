@@ -24,6 +24,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -51,33 +53,34 @@ class NotificationRestControllerTest {
     }
 
     @Test
-    void create() throws Exception{
+    void create() throws Exception {
         this.mockMvc.perform(post("/notifications")
-                .content(objectMapper.writeValueAsString(getTestNotificationDtoForCreate().toNotificationEntity()))
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+                        .content(objectMapper.writeValueAsString(getTestNotificationDtoForCreate().toNotificationEntity()))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id").value("2"));
 
     }
 
     @Test
-    void update() throws Exception{
-        NotificationEntity notificationEntity=getTestNotificationEntityForUpdate();
-        LocalDateTime time=LocalDateTime.of(2021,9,9,15,1,1);
+    void update() throws Exception {
+        NotificationEntity notificationEntity = getTestNotificationEntityForUpdate();
+        LocalDateTime time = LocalDateTime.of(2021, 9, 9, 15, 1, 1);
         notificationEntity.setModified(time);
+        notificationEntity.setModifiedBy("argus");
         this.mockMvc.perform(put("/notifications/1")
-                .content(objectMapper.writeValueAsString(notificationEntity))
-                .contentType(MediaType.APPLICATION_JSON)
-        )
+                        .content(objectMapper.writeValueAsString(notificationEntity))
+                        .contentType(MediaType.APPLICATION_JSON)
+                )
                 .andExpect(status().isAccepted())
-                .andExpect(jsonPath("$.modified").value(List.of(2021,9,9,15,1,1)));
+                .andExpect(jsonPath("$.modifiedBy").value("argus"));
     }
 
     @Test
-    void deleteTest() throws Exception{
-        this.mockMvc.perform(delete("/notifications/{id}",getTestNotificationEntityForUpdate().getId()))
-                    .andExpect(status().isAccepted())
+    void deleteTest() throws Exception {
+        this.mockMvc.perform(delete("/notifications/{id}", getTestNotificationEntityForUpdate().getId()))
+                .andExpect(status().isAccepted())
                 .andExpect(content().json(objectMapper.writeValueAsString(getTestNotificationEntityForUpdate())));
     }
 
@@ -85,18 +88,19 @@ class NotificationRestControllerTest {
     void list() throws Exception {
         this.mockMvc.perform(get("/notifications"))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.id").value("1"));
+                .andExpect(content().json(objectMapper.writeValueAsString(Arrays.asList(getTestNotificationEntityForUpdate()))));
     }
 
-    private NotificationDto getTestNotificationDtoForCreate(){
+    private NotificationDto getTestNotificationDtoForCreate() {
         return new NotificationDto();
     }
-    private NotificationEntity getTestNotificationEntityForUpdate(){
+
+    private NotificationEntity getTestNotificationEntityForUpdate() {
         NotificationEntity notificationEntity = new NotificationEntity();
         notificationEntity.setId(1L);
         notificationEntity.setStatus(NotificationStatus.NEW);
         notificationEntity.setType(NotificationType.INFO);
-        notificationEntity.setCreated(LocalDateTime.of(2021,8,8,15,0,0,0));
+        notificationEntity.setCreated(LocalDateTime.of(2021, 8, 8, 15, 0, 0));
         notificationEntity.setCreatedBy("argusgun");
         notificationEntity.setDescription("ok");
 
